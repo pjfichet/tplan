@@ -1,0 +1,244 @@
+.fp - R LinLibertine_R otf
+.fp - B LinLibertine_RB otf
+.fp - I LinLibertine_RBI otf
+.de tbl:c
+.	ft R
+.	ad c
+..
+.de tbl:l
+.	ft R
+.	ad l
+..
+.de tbl:r
+.	ft R
+.	ad r
+..
+.de tbl:cb
+.	ft B
+.	ad c
+..
+.de tbl:lb
+.	ft B
+.	ad l
+..
+.de tbl:rb
+.	ft B
+.	ad r
+..
+.bp:plan
+.	bp:nom Test
+.	bp:duree 3
+.	bp:annee 2020
+.	bp:mois 4
+.bp:produit
+.	bp:nom Produit sans délai
+.	bp:annee 1
+.	bp:chiffre_affaire 100000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 0
+.	bp:delai_client 0
+.	bp:achats 10000 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit sans délai
+.	bp:annee 2
+.	bp:chiffre_affaire 100000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 0
+.	bp:delai_client 0
+.	bp:achats 0 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit sans délai
+.	bp:annee 3
+.	bp:chiffre_affaire 100000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 0
+.	bp:delai_client 0
+.	bp:achats 0 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit avec délai fournisseur
+.	bp:annee 1
+.	bp:chiffre_affaire 1000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 60
+.	bp:delai_client 0
+.	bp:achats 1000 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit avec délai fournisseur
+.	bp:annee 2
+.	bp:chiffre_affaire 1000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 60
+.	bp:delai_client 0
+.	bp:achats 0 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit avec délai fournisseur
+.	bp:annee 3
+.	bp:chiffre_affaire 1000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 60
+.	bp:delai_client 0
+.	bp:achats 0 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit avec délai client
+.	bp:annee 1
+.	bp:chiffre_affaire 3000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 0
+.	bp:delai_client 45
+.	bp:achats 1000 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit avec délai client
+.	bp:annee 2
+.	bp:chiffre_affaire 3000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 0
+.	bp:delai_client 45
+.	bp:achats 0 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:produit
+.	bp:nom Produit avec délai client
+.	bp:annee 3
+.	bp:chiffre_affaire 3000
+.	bp:tva 0.20
+.	bp:prix_achat 0.50
+.	bp:delai_fournisseur 0
+.	bp:delai_client 45
+.	bp:achats 0 0 0 0 0 0 0 0 0 0 0 0
+.	bp:ventes 0 0 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1
+.bp:personnel
+.	bp:nom Salarié
+.	bp:annee 1
+.	bp:etp 1
+.	bp:embauche 1
+.	bp:salaire_brut 2000
+.	bp:charges_salariales 0.22
+.	bp:charges_patronales 0.45
+.bp:personnel
+.	bp:nom Salarié
+.	bp:annee 2
+.	bp:etp 1
+.	bp:embauche 1
+.	bp:salaire_brut 2000
+.	bp:charges_salariales 0.22
+.	bp:charges_patronales 0.45
+.bp:personnel
+.	bp:nom Salarié
+.	bp:annee 3
+.	bp:etp 1
+.	bp:embauche 1
+.	bp:salaire_brut 2000
+.	bp:charges_salariales 0.22
+.	bp:charges_patronales 0.45
+.bp:frais
+.	bp:nom Frais mensuel
+.	bp:annee 1
+.	bp:tva 0.2
+.	bp:calendrier 100 100 100 100 100 100 100 100 100 100 100 100
+.bp:frais
+.	bp:nom Frais mensuel
+.	bp:annee 2
+.	bp:tva 0.2
+.	bp:calendrier 100 100 100 100 100 100 100 100 100 100 100 100
+.bp:frais
+.	bp:nom Frais mensuel
+.	bp:annee 3
+.	bp:tva 0.2
+.	bp:calendrier 100 100 100 100 100 100 100 100 100 100 100 100
+.bp:frais
+.	bp:nom Frais trimestriel
+.	bp:annee 1
+.	bp:tva 0.2
+.	bp:calendrier 1000 0 0 1000 0 0 1000 0 0 1000 0 0
+.bp:frais
+.	bp:nom Frais trimestriel
+.	bp:annee 2
+.	bp:tva 0.2
+.	bp:calendrier 1000 0 0 1000 0 0 1000 0 0 1000 0 0
+.bp:frais
+.	bp:nom Frais trimestriel
+.	bp:annee 3
+.	bp:tva 0.2
+.	bp:calendrier 1000 0 0 1000 0 0 1000 0 0 1000 0 0
+.bp:frais
+.	bp:nom Frais annuel
+.	bp:annee 1
+.	bp:tva 0.2
+.	bp:calendrier 120 0 0 0 0 0 0 0 0 0 0 0
+.bp:frais
+.	bp:nom Frais annuel
+.	bp:annee 2
+.	bp:tva 0.2
+.	bp:calendrier 120 0 0 0 0 0 0 0 0 0 0 0
+.bp:frais
+.	bp:nom Frais annuel
+.	bp:annee 3
+.	bp:tva 0.2
+.	bp:calendrier 120 0 0 0 0 0 0 0 0 0 0 0
+.bp:impot
+.	bp:nom Impôt
+.	bp:annee 1
+.	bp:calendrier 0 0 0 0 0 0 0 0 1000 0 0 0
+.bp:impot
+.	bp:nom Impôt
+.	bp:annee 2
+.	bp:calendrier 0 0 0 0 0 0 0 0 1000 0 0 0
+.bp:impot
+.	bp:nom Impôt
+.	bp:annee 3
+.	bp:calendrier 0 0 0 0 0 0 0 0 1000 0 0 0
+.bp:investissement
+.	bp:nom Mobilier
+.	bp:annee 1
+.	bp:duree 5
+.	bp:tva 0.2
+.	bp:calendrier 1000 0 0 0 0 0 0 0 0 0 0 0
+.bp:capital
+.	bp:nom Capial social
+.	bp:annee 1
+.	bp:calendrier 50000 0 0 0 0 0 0 0 0 0 0 0
+.bp:subvention_investissement
+.	bp:nom Subvention d'investissement
+.	bp:annee 1
+.	bp:calendrier 0 0 0 0 0 5000 0 0 0 0 0 0
+.bp:subvention_exploitation
+.	bp:nom Subvention d'exploitation
+.	bp:annee 1
+.	bp:calendrier 0 0 3000 0 0 0 0 0 0 0 0 0
+.bp:emprunt
+.	bp:nom Crédit mutuel
+.	bp:annee 1
+.	bp:mois 1
+.	bp:montant 10000
+.	bp:duree 4
+.	bp:taux 0.02
+.	bp:nb_echeances_annuelles 12
+.bp:tbl 6c 2c 2c 2c
+.bp:resultat 1 2 3
+.bp
+.bp:tbl 8c 4c
+.bp:exploitation 1
+.bp
+.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:tresorerie 1 2 3 4 5 6
+.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:tresorerie 7 8 9 10 11 12
+.bp
+.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:bfr 1 2 3 4 5 6
+.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:bfr 7 8 9 10 11 12
