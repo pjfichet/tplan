@@ -44,11 +44,11 @@ regex_dict = {
 	'nb_echeances_annuelles': re.compile(r'^\.\s*bp:nb_echeances_annuelles\s+(?P<nb_echeances_annuelles>.*)\n'),
 	# Commands
 	'tbl': re.compile(r'^\.\s*bp:tbl\s+(?P<tbl>.*)\n'),
-	'resultat': re.compile(r'^\.\s*bp:resultat\s+(?P<resultat>.*)\n'),
-	'tresorerie': re.compile(r'^\.\s*bp:tresorerie\s+(?P<tresorerie>.*)\n'),
-	'exploitation': re.compile(r'^\.\s*bp:exploitation\s+(?P<exploitation>.*)\n'),
-	'bfr': re.compile(r'^\.\s*bp:bfr\s+(?P<bfr>.*)\n'),
-	'pfrais': re.compile(r'^\.\s*bp:pfrais\s+(?P<pfrais>.*)\n')
+	'tblresultat': re.compile(r'^\.\s*bp:tbl:resultat\s+(?P<tblresultat>.*)\n'),
+	'tbltresorerie': re.compile(r'^\.\s*bp:tbl:tresorerie\s+(?P<tbltresorerie>.*)\n'),
+	'tblexploitation': re.compile(r'^\.\s*bp:tbl:exploitation\s+(?P<tblexploitation>.*)\n'),
+	'tblbfr': re.compile(r'^\.\s*bp:tbl:bfr\s+(?P<tblbfr>.*)\n'),
+	'tblfrais': re.compile(r'^\.\s*bp:tbl:frais\s+(?P<tblfrais>.*)\n')
 }
 
 resultat_rows = [
@@ -295,33 +295,33 @@ class Parser():
 					self.format = data
 					width = re.sub('[c]', '', data)
 					self.width = sum(int(i) for i in width.split())
-				elif key == 'resultat':
+				elif key == 'tblresultat':
 					self.bp.set_resultat()
 					self.header("Compte de résultat")
 					annees = [int(i) for i in data.split()]
 					self.annee(annees)
 					columns = [int(i)-1 for i in data.split()]
 					self.table(self.bp.resultat, resultat_rows, columns)
-				elif key == 'exploitation':
+				elif key == 'tblexploitation':
 					self.bp.set_tresorerie()
 					self.header("Compte d'exploitation")
 					annees = [int(i) for i in data.split()]
 					self.annee(annees)
 					columns = [int(i)*12-1 for i in data.split()]
 					self.table(self.bp.tresorerie, exploitation_rows, columns)
-				elif key == 'tresorerie':
+				elif key == 'tbltresorerie':
 					self.bp.set_tresorerie()
 					self.header("Trésorerie")
 					columns = [int(i)-1 for i in data.split()]
 					self.mois(self.bp.tresorerie, columns)
 					self.table(self.bp.tresorerie, tresorerie_rows, columns)
-				elif key == 'bfr':
+				elif key == 'tblbfr':
 					self.bp.set_tresorerie()
 					self.header("Besoin en fonds de roulement")
 					columns = [int(i)-1 for i in data.split()]
 					self.mois(self.bp.tresorerie, columns)
 					self.table(self.bp.tresorerie, bfr_rows, columns)
-				elif key == 'pfrais':
+				elif key == 'tblfrais':
 					self.bp.set_resultat()
 					self.header("Frais")
 					print(f'.tblrow "Frais" "montant"')
