@@ -324,12 +324,26 @@ class Parser():
 				elif key == 'tblfrais':
 					self.bp.set_resultat()
 					self.header("Frais")
-					print(f'.tblrow "Frais" "montant"')
+					annees = [int(i) for i in data.split()]
+					self.annee(annees)
+					if self.debug:
+						return
+					done = []
 					for frais in self.bp.frais:
 						nom = frais.nom
-						montant = int(round(frais.montant))
-						print(f'.tblrow "{nom}" "{montant}"')
-					print(f'.tblend')
+						if nom in done:
+							continue	
+						done.append(nom)
+						print(f'.tblrow "{nom}"', end="")
+						for annee in annees:
+							get = self.bp.get_frais(nom, annee)
+							if get is None:
+								montant = 0
+							else:
+								montant = get.montant
+							print(f" {montant}", end="")
+						print('')
+					print(".tblend")
 
 
 	def header(self, header):
@@ -392,4 +406,6 @@ class Parser():
 					value = format(value, 'n')
 					print(f' "{value}"', end='')
 				print('')
-		print(".tblend")	
+		print(".tblend")
+
+

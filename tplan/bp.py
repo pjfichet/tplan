@@ -75,6 +75,11 @@ class Plan():
 		self.tresorerie.append(Tresorerie())
 		return self.tresorerie[-1]
 
+	def get_frais(self, nom, annee):
+		for frais in self.frais:
+			if frais.annee == annee and frais.nom == nom:
+				return frais
+
 	def get_tresorerie(self, cumul_mois):
 		for cal in self.tresorerie:
 			if cal.cumul_mois == cumul_mois:
