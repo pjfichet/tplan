@@ -1,4 +1,5 @@
 *.pyc
 /dist/
 /*.egg-info
-test.pdf
+/test.pdf
+/test.tr
