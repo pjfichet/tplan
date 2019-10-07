@@ -4,6 +4,7 @@ from .bp import Plan
 import re
 import locale
 import sys
+import os
 
 
 regex_prefix = re.compile(r'^\.\s*bp:')	
@@ -42,7 +43,8 @@ regex_dict = {
 	'calendrier': re.compile(r'^\.\s*bp:calendrier\s+(?P<calendrier>.*)\n'),
 	'taux': re.compile(r'^\.\s*bp:taux\s+(?P<taux>.*)\n'),
 	'nb_echeances_annuelles': re.compile(r'^\.\s*bp:nb_echeances_annuelles\s+(?P<nb_echeances_annuelles>.*)\n'),
-	# Commands
+
+	# Tables
 	'tbl': re.compile(r'^\.\s*bp:tbl\s+(?P<tbl>.*)\n'),
 	'tblresultat': re.compile(r'^\.\s*bp:tbl:resultat\s+(?P<tblresultat>.*)\n'),
 	'tbltresorerie': re.compile(r'^\.\s*bp:tbl:tresorerie\s+(?P<tbltresorerie>.*)\n'),
@@ -190,7 +192,8 @@ class Parser():
 		self.width = 0
 
 	def error(self, text):
-		print(f"{sys.argv[0]}, ligne {self.line}:", text, file=sys.stderr)
+		name = os.path.basename(sys.argv[0])
+		print(f"{name} ligne {self.line}:", text, file=sys.stderr)
 
 	def parse_line(self, line):
 		match = regex_prefix.search(line)
@@ -290,7 +293,7 @@ class Parser():
 					self.cur.taux = float(data)
 				elif key == 'nb_echeances_annuelles':
 					self.cur.nb_echeances_annuelles = int(data)
-				# commands
+				# Tables
 				elif key == 'tbl':
 					self.format = data
 					width = re.sub('[c]', '', data)
