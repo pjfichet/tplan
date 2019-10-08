@@ -27,6 +27,14 @@ class Plan():
 	has_resultat: bool = False
 	has_tresorerie: bool = False
 
+	def reset(self):
+		self.remboursement.clear()
+		self.resultat.clear()
+		self.tresorerie.clear()
+		self.has_emprunt = False
+		self.has_resultat = False
+		self.has_tresorerie = False
+
 	def new_produit(self):
 		self.produit.append(Produit())
 		return self.produit[-1]

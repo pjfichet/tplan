@@ -50,7 +50,15 @@ regex_dict = {
 	'tbltresorerie': re.compile(r'^\.\s*bp:tbl:tresorerie\s+(?P<tbltresorerie>.*)\n'),
 	'tblexploitation': re.compile(r'^\.\s*bp:tbl:exploitation\s+(?P<tblexploitation>.*)\n'),
 	'tblbfr': re.compile(r'^\.\s*bp:tbl:bfr\s+(?P<tblbfr>.*)\n'),
-	'tblfrais': re.compile(r'^\.\s*bp:tbl:frais\s+(?P<tblfrais>.*)\n')
+	'tblfrais': re.compile(r'^\.\s*bp:tbl:frais\s+(?P<tblfrais>.*)\n'),
+
+	# set a value
+	'set': re.compile(r'^\.\s*bp:set:(?P<group>\w+):(?P<index>\d+):(?P<key>\w+)\s+(?P<value>.*)\n'),
+
+	# get a Value
+	'get': re.compile(r'^\.\s*bp:get:(?P<group>\w+):(?P<index>\d+):(?P<key>\w+)')
+
+
 }
 
 resultat_rows = [
@@ -195,6 +203,17 @@ class Parser():
 		name = os.path.basename(sys.argv[0])
 		print(f"{name} ligne {self.line}:", text, file=sys.stderr)
 
+	def set_type(self, text):
+		try:
+			int(text)
+			return(int(text))
+		except:
+			try:
+				float(text)
+				return(float(text))
+			except:
+				return(text)
+
 	def parse_line(self, line):
 		match = regex_prefix.search(line)
 		if match:
@@ -236,6 +255,49 @@ class Parser():
 				self.cur = self.bp.new_subvention_investissement()
 			elif key == 'emprunt':
 				self.cur = self.bp.new_emprunt()
+			# Values
+			elif key == 'get':
+				_class = match.group('group')
+				_index = int(match.group('index'))
+				_key = match.group('key')
+				self.bp.set_resultat()
+				self.bp.set_tresorerie()
+				try:
+					_class = getattr(self.bp, _class)
+				except AttributeError:
+					self.error(f"bp has no attribute {group}.")
+					continue
+				try:
+					value = getattr(_class[_index], _key)
+				except IndexError:
+					self.error(f"bp:get:{_class}:{_index} index out of range.")
+					continue
+				except AttributeError:
+					self.error(f"bp:get:{_class}:{_index} had no attribute {_key}.")
+					continue
+				if isinstance(value, float):
+					value=int(round(value))
+					value = format(value, 'n')
+				print(f"{value}")
+			elif key == 'set':
+				_class = match.group('group')
+				_index = int(match.group('index'))
+				_key = match.group('key')
+				_value = self.set_type(match.group('value'))
+				try:
+					_class = getattr(self.bp, _class)
+				except AttributeError:
+					self.error(f"bp:set has no attribute {_class}.")
+					continue
+				try:
+					setattr(_class[_index], _key, _value)
+					self.bp.reset()
+				except IndexError:
+					self.error(f"bp:set:{_class}:{_index} index out of range.")
+					continue
+				except AttributeError:
+					self.error(f"bp:set:{_class}:{_index} has no attribute {_key}.")
+					continue
 			# datas
 			else:
 				data = match.group(key)
