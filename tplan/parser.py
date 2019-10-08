@@ -1,192 +1,12 @@
 #! /usr/bin/env python
 
 from .bp import Plan
+from .data import *
+from .tables import *
 import re
 import locale
 import sys
 import os
-
-
-regex_prefix = re.compile(r'^\.\s*bp:')	
-regex_dict = {
-	# 	'#': re.compile(r'^\.\s*bp:#\s*\n'),
-	# Classes
-	'plan': re.compile(r'^\.\s*bp:plan\s*\n'),
-	'produit': re.compile(r'^\.\s*bp:produit\s*\n'),
-	'personnel': re.compile(r'^\.\s*bp:personnel\s*\n'),
-	'frais': re.compile(r'^\.\s*bp:frais\s*\n'),
-	'impot': re.compile(r'^\.\s*bp:impot\s*\n'),
-	'investissement': re.compile(r'^\.\s*bp:investissement\s*\n'),
-	'capital': re.compile(r'^\.\s*bp:capital\s*\n'),
-	'subvention_exploitation': re.compile(r'^\.\s*bp:subvention_exploitation\s*\n'),
-	'subvention_investissement': re.compile(r'^\.\s*bp:subvention_investissement\s*\n'),
-	'emprunt': re.compile(r'^\.\s*bp:emprunt\s*\n'),
-
-	# Data
-	'nom': re.compile(r'^\.\s*bp:nom\s+(?P<nom>.*)\n'),
-	'duree': re.compile(r'^\.\s*bp:duree\s+(?P<duree>.*)\n'),
-	'annee': re.compile(r'^\.\s*bp:annee\s+(?P<annee>.*)\n'),
-	'mois': re.compile(r'^\.\s*bp:mois\s+(?P<mois>.*)\n'),
-	'chiffre_affaire': re.compile(r'^\.\s*bp:chiffre_affaire\s+(?P<chiffre_affaire>.*)\n'),
-	'tva': re.compile(r'^\.\s*bp:tva\s+(?P<tva>.*)\n'),
-	'prix_achat': re.compile(r'^\.\s*bp:prix_achat\s+(?P<prix_achat>.*)\n'),
-	'delai_fournisseur': re.compile(r'^\.\s*bp:delai_fournisseur\s+(?P<delai_fournisseur>.*)\n'),
-	'delai_client': re.compile(r'^\.\s*bp:delai_client\s+(?P<delai_client>.*)\n'),
-	'achats': re.compile(r'^\.\s*bp:achats\s+(?P<achats>.*)\n'),
-	'ventes': re.compile(r'^\.\s*bp:ventes\s+(?P<ventes>.*)\n'),
-	'etp': re.compile(r'^\.\s*bp:etp\s+(?P<etp>.*)\n'),
-	'embauche': re.compile(r'^\.\s*bp:embauche\s+(?P<embauche>.*)\n'),
-	'salaire_brut': re.compile(r'^\.\s*bp:salaire_brut\s+(?P<salaire_brut>.*)\n'),
-	'charges_salariales': re.compile(r'^\.\s*bp:charges_salariales\s+(?P<charges_salariales>.*)\n'),
-	'charges_patronales': re.compile(r'^\.\s*bp:charges_patronales\s+(?P<charges_patronales>.*)\n'),
-	'montant': re.compile(r'^\.\s*bp:montant\s+(?P<montant>.*)\n'),
-	'calendrier': re.compile(r'^\.\s*bp:calendrier\s+(?P<calendrier>.*)\n'),
-	'taux': re.compile(r'^\.\s*bp:taux\s+(?P<taux>.*)\n'),
-	'nb_echeances_annuelles': re.compile(r'^\.\s*bp:nb_echeances_annuelles\s+(?P<nb_echeances_annuelles>.*)\n'),
-
-	# Tables
-	'tbl': re.compile(r'^\.\s*bp:tbl\s+(?P<tbl>.*)\n'),
-	'tblresultat': re.compile(r'^\.\s*bp:tbl:resultat\s+(?P<tblresultat>.*)\n'),
-	'tbltresorerie': re.compile(r'^\.\s*bp:tbl:tresorerie\s+(?P<tbltresorerie>.*)\n'),
-	'tblexploitation': re.compile(r'^\.\s*bp:tbl:exploitation\s+(?P<tblexploitation>.*)\n'),
-	'tblbfr': re.compile(r'^\.\s*bp:tbl:bfr\s+(?P<tblbfr>.*)\n'),
-	'tblfrais': re.compile(r'^\.\s*bp:tbl:frais\s+(?P<tblfrais>.*)\n'),
-
-	# set a value
-	'set': re.compile(r'^\.\s*bp:set:(?P<group>\w+):(?P<index>\d+):(?P<key>\w+)\s+(?P<value>.*)\n'),
-
-	# get a Value
-	'get': re.compile(r'^\.\s*bp:get:(?P<group>\w+):(?P<index>\d+):(?P<key>\w+)')
-
-
-}
-
-resultat_rows = [
-	['chiffre_affaire', "Chiffre d'affaire"],
-	['achat_marchandise', "Achat marchandises"],
-	['variation_marchandise', "Variation stock marchandise"],
-	['tbl:lb', "tbl:rb"],
-	['marge_commerciale', "Marge commerciale"],
-	['tbl:l', "tbl:r"],
-	['frais', "Autres achats"],
-	['subvention_exploitation', "Subventions d'exploitation"],
-	['tbl:lb', "tbl:rb"],
-	['valeur_ajoutee', "Valeur ajoutée"],
-	["tbl:l", "tbl:r"],
-	['impot', "Impôts et taxes"],
-	['salaire_net', "Salaires nets"],
-	['charges_sociales', "Charges sociales"],
-	['excedent', "Excédent brut d'exploitation"],
-	['amortissement', "Dotation aux amortissements"],
-	['resultat_exploitation', "Résultat d'exploitation"],
-	['emprunt_interets', "Intérêts des emprunts"],
-	["tbl:lb", "tbl:rb"],
-	['resultat_courant', "Résultat courant"],
-	["tbl:l", "tbl:r"],
-	['produits_exceptionnels', "Produits exceptionnels"],
-	['impot_societes', "Impôt sur les sociétés"],
-	["tbl:lb", "tbl:rb"],
-	['resultat_net', "Résultat net"],
-	["tbl:l", "tbl:r"],
-	['autofinancement', "Autofinancement"]
-]
-
-bilan_rows = [
-	["actif_immobilise", "Actif immobilisé net"],
-	["immobilisations_brutes", "Immobilisations brutes"],
-	["amortissements", "Amortissements"],
-	["actif_circulant", "Actif circulant"],
-	["stock", "Stock"],
-	["creances_clients", "Créances clients"],
-	["autres_creances", "Autres créances"],
-	["disponibilites", "Disponibilités"],
-	["total_actif", "Total actif"],
-	["capitaux_propres", "Capitaux propres"],
-	["capital_social", "Capital social"],
-	["reserves", "Réserves"],
-	["resultat_net", "Résultat net"],
-	["subvention_investissement", "Subventions d'investissements"],
-	["dettes", "Dettes"],
-	["emprunts", "Emprunts à moyen et long terme"],
-	["fournisseurs", "Fournisseurs"],
-	["dettes_fiscales", "Dettes fiscales et sociales"],
-	["total_passif", "Total passif"]
-]
-
-exploitation_rows = [
-	["cumul_stock", "Stock marchandises"],
-	["creances_clients", "Créances clients"],
-	["credit_tva", "Créances TVA"],
-	["creances_fiscales", "Créances fiscales"],
-	['tbl:lb', "tbl:rb"],
-	["total_creances", "Total créances"],
-	['tbl:l', "tbl:r"],
-	["dettes_fournisseurs", "Comptes fournisseurs"],
-	["debit_tva", "TVA à payer"],
-	["dettes_fiscales", "Dettes fiscales"],
-	["dettes_sociales", "Dettes sociales"],
-	['tbl:lb', "tbl:rb"],
-	["total_dettes", "Total dettes"],
-	["bfr", "Besoin en fonds de roulement"],
-	['tbl:l', "tbl:r"],
-	["variation_bfr_annuel", "Variation de BFR"],
-	["chiffre_affaire_annuel", "Chiffre d'affaire"],
-	["bfr_jours_ca", "BFR en jours de CA"]
-]
-
-bfr_rows = [
-	["cumul_stock", "Stock marchandises"],
-	["variation_stock", "Variation stock"],
-	["creances_clients", "Créances clients"],
-	["credit_tva", "Créances TVA"],
-	["creances_fiscales", "Créances fiscales"],
-	['tbl:lb', "tbl:rb"],
-	["total_creances", "Total créances"],
-	['tbl:l', "tbl:r"],
-	["variation_creances", "Variation créances"],
-	["dettes_fournisseurs", "Comptes fournisseurs"],
-	["debit_tva", "TVA à payer"],
-	["dettes_fiscales", "Dettes fiscales"],
-	["dettes_sociales", "Dettes sociales"],
-	['tbl:lb', "tbl:rb"],
-	["total_dettes", "Total dettes"],
-	['tbl:l', "tbl:r"],
-	["variation_dettes", "Variation dettes"],
-	['tbl:lb', "tbl:rb"],
-	["bfr", "Besoin en fonds de roulement"],
-	['tbl:l', "tbl:r"],
-	["variation_bfr", "Variation de BFR"]
-]
-
-
-tresorerie_rows = [
-	["ventes", "Clients TTC"],
-	["apport", "Capital et subventions"],
-	["emprunt", "Emprunts"],
-	['tbl:lb', "tbl:rb"],
-	["entrees", "Total encaissements"],
-	['tbl:l', "tbl:r"],
-	["achats", "Achats TTC"],
-	["frais", "Frais généraux TTC"],
-	["tva", "TVA à payer"],
-	["salaires_net", "Salaires"],
-	["charges_sociales", "Cotisations sociales"],
-	["investissement", "Investissements TTC"],
-	["remboursement", "Remboursements d'emprunts"],
-	["impot", "Impôts"],
-	['tbl:lb', "tbl:rb"],
-	["sorties", "Total décaissements"],
-	['tbl:l', "tbl:r"],
-	["solde_mensuel", "Solde mensuel"],
-	['tbl:lb', "tbl:rb"],
-	["solde_cumul", "Solde cumulé"],
-	['tbl:l', "tbl:r"]
-]
-
-mois_list = [ 'janvier', 'février', 'mars', 'avril', 'mai', 'juin',
-	'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
-
-
 
 
 class Parser():
@@ -195,233 +15,198 @@ class Parser():
 		self.debug = debug
 		self.bp = None
 		self.cur = None
-		self.line = 0
-		self.format = ""
-		self.width = 0
+		self.line = ""
+		self.line_number = 0
+		self.table_format = ""
+		self.table_width = 0
 
 	def error(self, text):
 		name = os.path.basename(sys.argv[0])
-		print(f"{name} ligne {self.line}:", text, file=sys.stderr)
+		print(f"{name} ligne {self.line_number}: {self.line}", file=sys.stderr, end='')
+		print(f"    {text}", file=sys.stderr)
 
-	def set_type(self, text):
-		try:
-			int(text)
-			return(int(text))
-		except:
-			try:
-				float(text)
-				return(float(text))
-			except:
-				return(text)
-
-	def parse_line(self, line):
-		match = regex_prefix.search(line)
+	def parse_line(self):
+		regex = re.compile(r'^\.\s*bp:(?P<command>\w+)')	
+		match = regex.search(self.line)
 		if match:
-			for key, regex in regex_dict.items():
-				match = regex.search(line)
-				if match:
-					return key, match
-		return None, None	
+			command = match.group('command')
+			return command
+		return None	
 
-	def parse(self, fileobject):
-		line = fileobject.readline()
-		while line:
-			self.line += 1
-			key, match = self.parse_line(line)
-			if not self.debug:
-				print(line, end='')
-			line = fileobject.readline()
-			if key is None:
-				continue	
-			# classes
-			elif key == 'plan':
-				self.bp = Plan()
-				self.cur = self.bp
-			elif key == 'produit':
-				self.cur = self.bp.new_produit()
-			elif key == 'personnel':
-				self.cur = self.bp.new_personnel()
-			elif key == 'frais':
-				self.cur = self.bp.new_frais()
-			elif key == 'impot':
-				self.cur = self.bp.new_impot()
-			elif key == 'investissement':
-				self.cur = self.bp.new_investissement()
-			elif key == 'capital':
-				self.cur = self.bp.new_capital()
-			elif key == 'subvention_exploitation':
-				self.cur = self.bp.new_subvention_exploitation()
-			elif key == 'subvention_investissement':
-				self.cur = self.bp.new_subvention_investissement()
-			elif key == 'emprunt':
-				self.cur = self.bp.new_emprunt()
-			# Values
-			elif key == 'get':
-				_class = match.group('group')
-				_index = int(match.group('index'))
-				_key = match.group('key')
-				self.bp.set_resultat()
-				self.bp.set_tresorerie()
-				try:
-					_class = getattr(self.bp, _class)
-				except AttributeError:
-					self.error(f"bp has no attribute {group}.")
-					continue
-				try:
-					value = getattr(_class[_index], _key)
-				except IndexError:
-					self.error(f"bp:get:{_class}:{_index} index out of range.")
-					continue
-				except AttributeError:
-					self.error(f"bp:get:{_class}:{_index} had no attribute {_key}.")
-					continue
-				if isinstance(value, float):
-					value=int(round(value))
-					value = format(value, 'n')
-				print(f"{value}")
-			elif key == 'set':
-				_class = match.group('group')
-				_index = int(match.group('index'))
-				_key = match.group('key')
-				_value = self.set_type(match.group('value'))
-				try:
-					_class = getattr(self.bp, _class)
-				except AttributeError:
-					self.error(f"bp:set has no attribute {_class}.")
-					continue
-				try:
-					setattr(_class[_index], _key, _value)
-					self.bp.reset()
-				except IndexError:
-					self.error(f"bp:set:{_class}:{_index} index out of range.")
-					continue
-				except AttributeError:
-					self.error(f"bp:set:{_class}:{_index} has no attribute {_key}.")
-					continue
-			# datas
+	def parse(self, infile):
+		self.line = infile.readline()
+		while self.line:
+			self.line_number += 1
+			command = self.parse_line()
+			if command in classes:
+				self.parse_class(command)
+			elif command in fields:
+				self.parse_field()
+			elif command == 'set':
+				self.parse_set()
+			elif command == 'get':
+				self.parse_get()
+			elif command == 'tbl':
+				self.parse_table()
+			elif command is not None:
+				self.error(f"Unknown command {command}.")
+				if not self.debug:
+					print(self.line, end='')
 			else:
-				data = match.group(key)
-				if key == 'nom':
-					self.cur.nom = data
-				elif key == 'duree':
-					self.cur.duree = int(data)
-				elif key == 'annee':
-					self.cur.annee = int(data)
-				elif key == 'mois':
-					self.cur.mois = int(data)
-				elif key == 'chiffre_affaire':
-					self.cur.chiffre_affaire = float(data)
-				elif key == 'tva':
-					self.cur.tva = float(data)
-				elif key == 'prix_achat':
-					self.cur.prix_achat = float(data)
-				elif key == 'delai_fournisseur':
-					self.cur.delai_fournisseur = int(data)
-				elif key == 'delai_client':
-					self.cur.delai_client = int(data)
-				elif key == 'achats':
-					self.cur.achats = [float(i) for i in data.split()]
-					elems = len(self.cur.achats)
-					if elems != 12:
-						self.error(f"Achats invalides ({elems} éléments)")
-				elif key == 'ventes':
-					self.cur.ventes = [float(i) for i in data.split()]
-					elems = len(self.cur.ventes)
-					if elems != 12:
-						self.error(f"Ventes invalides ({elems} éléments)")
-					total = round(sum(self.cur.ventes))
-					if total != 1:
-						self.error(f"Ventes invalides (total de {total}).")
-				elif key == 'etp':
-					self.cur.etp = float(data)
-				elif key == 'embauche':
-					self.cur.embauche = int(data)
-				elif key == 'salaire_brut':	
-					self.cur.salaire_brut = float(data)
-				elif key == 'charges_salariales':
-					self.cur.charges_salariales = float(data)
-				elif key == 'charges_patronales':
-					self.cur.charges_patronales = float(data)
-				elif key == 'duree':
-					self.cur.duree = int(data)
-				elif key == 'montant':
-					self.cur.montant = int(data)
-				elif key == 'calendrier':
-					self.cur.calendrier = [float(i) for i in data.split()]
-					elems = len(self.cur.calendrier)
-					if elems != 12:
-						self.error(f"calendrier invalide ({elems} éléments)")
-				elif key == 'taux':
-					self.cur.taux = float(data)
-				elif key == 'nb_echeances_annuelles':
-					self.cur.nb_echeances_annuelles = int(data)
-				# Tables
-				elif key == 'tbl':
-					self.format = data
-					width = re.sub('[c]', '', data)
-					self.width = sum(int(i) for i in width.split())
-				elif key == 'tblresultat':
-					self.bp.set_resultat()
-					self.header("Compte de résultat")
-					annees = [int(i) for i in data.split()]
-					self.annee(annees)
-					columns = [int(i)-1 for i in data.split()]
-					self.table(self.bp.resultat, resultat_rows, columns)
-				elif key == 'tblexploitation':
-					self.bp.set_tresorerie()
-					self.header("Compte d'exploitation")
-					annees = [int(i) for i in data.split()]
-					self.annee(annees)
-					columns = [int(i)*12-1 for i in data.split()]
-					self.table(self.bp.tresorerie, exploitation_rows, columns)
-				elif key == 'tbltresorerie':
-					self.bp.set_tresorerie()
-					self.header("Trésorerie")
-					columns = [int(i)-1 for i in data.split()]
-					self.mois(self.bp.tresorerie, columns)
-					self.table(self.bp.tresorerie, tresorerie_rows, columns)
-				elif key == 'tblbfr':
-					self.bp.set_tresorerie()
-					self.header("Besoin en fonds de roulement")
-					columns = [int(i)-1 for i in data.split()]
-					self.mois(self.bp.tresorerie, columns)
-					self.table(self.bp.tresorerie, bfr_rows, columns)
-				elif key == 'tblfrais':
-					self.bp.set_resultat()
-					self.header("Frais")
-					annees = [int(i) for i in data.split()]
-					self.annee(annees)
-					if self.debug:
-						return
-					done = []
-					for frais in self.bp.frais:
-						nom = frais.nom
-						if nom in done:
-							continue	
-						done.append(nom)
-						print(f'.tblrow "{nom}"', end="")
-						for annee in annees:
-							get = self.bp.get_frais(nom, annee)
-							if get is None:
-								montant = 0
-							else:
-								montant = get.montant
-							print(f" {montant}", end="")
-						print('')
-					print(".tblend")
+				if not self.debug:
+					print(self.line, end='')
+			self.line = infile.readline()
 
+	def parse_class(self, command):
+		if command == 'plan':
+			self.bp = Plan()
+			self.cur = self.bp
+		else:
+			function = getattr(self.bp, "new_" + command)
+			self.cur = function()
+
+
+	def set_type(self, field, value):
+		if field in int_fields:
+			value = int(value)	
+		elif field in float_fields:
+			value = float(value)
+		elif field in dict_fields:
+			value = [float(i) for i in value.split()]
+			if len(value) != 12:
+				self.error("Not 12 elements.")
+				return []
+		if field in percent_fields:
+			total = round(sum(value))
+			if total != 1:
+				self.error(f"Total de {total}.")
+				return []
+		return value
+
+	def parse_field(self):
+		regex = re.compile(r'^\.\s*bp:(?P<field>\w+)\s+(?P<value>.*)\n')
+		match = regex.search(self.line)
+		if not match:
+			self.error("Donnée manquante.")
+			return
+		field = match.group('field')
+		value = match.group('value')
+		value = self.set_type(field, value)
+		setattr(self.cur, field, value)
+
+
+	def parse_set(self):
+		regex = re.compile(r'^\.\s*bp:set:(?P<classe>\w+):(?P<index>\d+):(?P<field>\w+)\s+(?P<value>.*)\n')
+		match = regex.search(self.line)
+		if not match:
+			self.error("Invalid command set.")
+			return
+		classe = match.group('classe')
+		if classe not in classes:
+			self.error(f"Unknown class {classe}.")
+			return
+		index = int(match.group('index'))
+		field = match.group('field')
+		if field not in fields:
+			self.error(f"Unknown field {field}.")
+		value = match.group('value')
+		value = self.set_type(field, value)
+		try:
+			classe = getattr(self.bp, classe)
+			setattr(classe[index], field, value)
+		except IndexError:
+			self.error(f"Index '{index}' out of range.")
+			return
+		except AttributeError:
+			self.error(f"Invalid field {field}.")
+			return
+		self.bp.reset()
+
+	def parse_get(self):
+		regex = re.compile(r'^\.\s*bp:get:(?P<classe>\w+):(?P<index>\d+):(?P<field>\w+)')
+		match = regex.search(self.line)
+		if not match:
+			self.error("Invalid command get.")
+			return
+		classe = match.group('classe')
+		if classe not in classes + other_classes:
+			self.error(f"Unknown class {classe}.")
+			return
+		index = int(match.group('index'))
+		field = match.group('field')
+		if field not in fields + other_fields:
+			self.error(f"Unknown field {field}.")
+		self.bp.set()
+		try:
+			classe = getattr(self.bp, classe)
+			value = getattr(classe[index], field)
+		except IndexError:
+			self.error(f"Index '{index}' out of range.")
+			return
+		except AttributeError:
+			self.error(f"Invalid field {field}.")
+			return
+		if field in float_fields + other_float_fields:
+			value=int(round(value))
+			value = format(value, 'n')
+		before = ""
+		after = ""
+		regex = re.compile(r'^\.\s*bp:get:(?P<classe>\w+):(?P<index>\d+):(?P<field>\w+)\s+(?P<after>\S*)')
+		match = regex.search(self.line)
+		if match:
+			after = match.group('after') 
+		regex = re.compile(r'^\.\s*bp:get:(?P<classe>\w+):(?P<index>\d+):(?P<field>\w+)\s+(?P<after>\S*)\s+(?P<before>\S*)')
+		match = regex.search(self.line)
+		if match:
+			before = match.group('before') 
+		print(f"{before}{value}{after}")
+
+	def parse_table(self):
+		regex = re.compile(r'^\.\s*bp:tbl:(?P<table>\w+)\s+(?P<fields>.*)')
+		match = regex.search(self.line)
+		if not match:
+			self.error("Invalid command tbl.")
+			return
+		table = match.group('table')
+		fields = match.group('fields')
+		if table not in tables:
+			self.error(f"Unknown table {table}.")
+		if table == 'format':
+			self.table_format = fields	
+			width = re.sub('[c]', '', fields)
+			self.table_width = sum(int(i) for i in width.split())
+			return
+		annees = [int(i) for i in fields.split()]
+		mois = [int(i)*12-1 for i in fields.split()]
+		columns = [int(i)-1 for i in fields.split()]
+		self.bp.set()
+		if table == 'resultat':
+			self.header("Compte de résultat")
+			self.annee(annees)
+			self.table(self.bp.resultat, resultat_rows, columns)
+		elif table == 'exploitation':
+			self.header("Compte d'exploitation")
+			self.table(self.bp.tresorerie, exploitation_rows, columns)
+		elif table == 'tresorerie':
+			self.header("Trésorerie")
+			self.mois(self.bp.tresorerie, columns)
+			self.table(self.bp.tresorerie, tresorerie_rows, columns)
+		elif table == 'bfr':
+			self.header("Besoin en fonds de roulement")
+			self.mois(self.bp.tresorerie, columns)
+			self.table(self.bp.tresorerie, bfr_rows, columns)
+		elif table == 'frais':
+			self.header("Frais")
+			self.table_frais(annees)
 
 	def header(self, header):
 		if self.debug:
 			return
-		print(".tblbeg", str(self.width) + 'c')
+		print(".tblbeg", str(self.table_width) + 'c')
 		print(".tblbox 0 1 1")
 		print(".tblmac tbl:cb")
 		print(".tblrow", '"' + header + '"')
-		print(".tblrec", self.format)
-
-
-
+		print(".tblrec", self.table_format)
 
 	def mois(self, data, mois):
 		if self.debug:
@@ -435,8 +220,7 @@ class Parser():
 			nom = mois_list[data[m].mois_reel -1]
 			print(f' "{nom}"', end='')
 		print('')
-			
-		
+				
 	def annee(self, annees):
 		if self.debug:
 			return
@@ -472,5 +256,27 @@ class Parser():
 					print(f' "{value}"', end='')
 				print('')
 		print(".tblend")
+
+	def table_frais(self, annees):
+		if self.debug:
+			return
+		self.annee(annees)
+		done = []
+		for frais in self.bp.frias:
+			nom = frais.nom
+			if nom in done:
+				continue
+			done.append(nom)
+			print(f'.tblrow "{nom}"', end="")
+			for annee in annees:
+				get = self.bp.get_frais(nom, annee)
+				if get is None:
+					montant = 0
+				else:
+					montant = get.montant
+				print(f" {montant}", end="")
+			print('')
+		print(".tblend")
+
 
 

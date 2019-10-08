@@ -35,6 +35,14 @@ class Plan():
 		self.has_resultat = False
 		self.has_tresorerie = False
 
+	def set(self):
+		if not self.has_emprunt:
+			self.set_emprunt()
+		if not self.has_resultat:
+			self.set_resultat()
+		if not self.has_tresorerie:
+			self.set_tresorerie()
+
 	def new_produit(self):
 		self.produit.append(Produit())
 		return self.produit[-1]

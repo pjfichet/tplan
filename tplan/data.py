@@ -3,6 +3,73 @@
 from dataclasses import dataclass, field
 from typing import List
 
+classes = ['plan', 'produit', 'personnel', 'frais', 'impot',
+	'investissement', 'capital', 'subvention_exploitation',
+	'subvention_investissement', 'emprunt']
+
+
+other_classes = ['resultat', 'tresorerie']
+
+fields = ['nom', 'duree', 'annee', 'mois', 'chiffre_affaire', 'tva',
+	'prix_achat', 'delai_fournisseur', 'delai_client', 'achats',
+	'ventes', 'etp', 'embauche', 'salaire_brut', 'charges_salariales',
+	'charges_patronales', 'montant', 'calendrier', 'taux',
+'nb_echeances_annuelles']
+
+
+other_fields = ['annee_relle', 'chiffre_affaire', 'achat_marchandise',
+'variation_marchandise', 'marge_commerciale', 'frais', 'impot',
+'investissement', 'amortissement', 'capital', 'salaire_brut',
+'salaire_net', 'charges_salariales', 'charges_patronales',
+'charges_sociales', 'subvention_exploitation',
+'subvention_investissement', 'amortissement_subventions',
+'emprunt_echeances', 'emprunt_capital', 'emprunt_interets',
+'valeur_ajoutee', 'excedent', 'resultat_exploitation',
+'resultat_courant', 'produits_exceptionnels', 'impot_societes',
+'resultat_net', 'autofinancement', 'annee', 'mois', 'cumul_mois',
+'mois_reel', 'annee_reelle', 'ventes', 'tva_ventes', 'achats',
+'tva_achats', 'chiffre_affaire', 'chiffre_affaire_annuel',
+'variation_stock', 'cumul_stock', 'apport', 'emprunt',
+'remboursement', 'frais', 'impot', 'tva_frais', 'salaires_net',
+'dettes_sociales', 'charges_sociales', 'investissement',
+'tva_investissement', 'entrees', 'sorties', 'solde_mensuel',
+'solde_cumul', 'credit_tva', 'debit_tva', 'tva', 'creances_clients',
+'dettes_fournisseurs', 'creances_fiscales', 'dettes_fiscales',
+'cumul_dettes_sociales', 'total_creances', 'variation_creances',
+'total_dettes', 'variation_dettes', 'bfr', 'variation_bfr',
+'variation_bfr_annuel', 'bfr_jours_ca',]
+
+
+int_fields = ['duree', 'annee', 'mois', 'delai_fournisseur',
+	'delai_client', 'embauche', 'duree', 'montant', 'nb_echeances_annuelles']
+float_fields = ['chiffre_affaire', 'tva', 'prix_achat', 'etp',
+	'salaire_brut', 'charges_salariales', 'charges_patronales',
+	'taux']
+
+other_float_fields = [
+	'achat_marchandise', 'variation_marchandise', 'marge_commerciale',
+	'frais', 'impot', 'investissement', 'amortissement', 'capital',
+	'salaire_brut', 'salaire_net', 'charges_salariales',
+	'charges_patronales', 'charges_sociales', 'subvention_exploitation',
+	'subvention_investissement', 'amortissement_subventions',
+	'emprunt_echeances', 'emprunt_capital', 'emprunt_interets',
+	'valeur_ajoutee', 'excedent', 'resultat_exploitation',
+	'resultat_courant', 'produits_exceptionnels', 'impot_societes',
+	'resultat_net', 'autofinancement', 'tva_ventes',
+	'tva_achats', 'chiffre_affaire_annuel', 'variation_stock',
+	'cumul_stock', 'apport', 'emprunt', 'remboursement', 'frais', 'impot',
+	'tva_frais', 'salaires_net', 'dettes_sociales', 'charges_sociales',
+	'investissement', 'tva_investissement', 'entrees', 'sorties',
+	'solde_mensuel', 'solde_cumul', 'credit_tva', 'debit_tva', 'tva',
+	'creances_clients', 'dettes_fournisseurs', 'creances_fiscales',
+	'dettes_fiscales', 'cumul_dettes_sociales', 'total_creances',
+	'variation_creances', 'total_dettes', 'variation_dettes', 'bfr',
+	'variation_bfr', 'variation_bfr_annuel', 'bfr_jours_ca']
+
+dict_fields = ['achats', 'ventes', 'calendrier']
+percent_fields = ['ventes',]
+
+
 @dataclass
 class Produit():
 	nom: str = ''

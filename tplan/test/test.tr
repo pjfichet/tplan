@@ -227,21 +227,21 @@
 .	bp:duree 4
 .	bp:taux 0.02
 .	bp:nb_echeances_annuelles 12
-.bp:tbl 6c 2c 2c 2c
+.bp:tbl:format 6c 2c 2c 2c
 .bp:tbl:resultat 1 2 3
 .bp
-.bp:tbl 8c 4c
+.bp:tbl:format 8c 4c
 .bp:tbl:exploitation 1
 .bp
-.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:tbl:format 5c 2c 2c 2c 2c 2c 2c
 .bp:tbl:tresorerie 1 2 3 4 5 6
-.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:tbl:format 5c 2c 2c 2c 2c 2c 2c
 .bp:tbl:tresorerie 7 8 9 10 11 12
 .bp
-.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:tbl:format 5c 2c 2c 2c 2c 2c 2c
 .bp:tbl:bfr 1 2 3 4 5 6
-.bp:tbl 5c 2c 2c 2c 2c 2c 2c
+.bp:tbl:format 5c 2c 2c 2c 2c 2c 2c
 .bp:tbl:bfr 7 8 9 10 11 12
 .bp
-.bp:tbl 6c 2c 2c 2c
+.bp:tbl:format 6c 2c 2c 2c
 .bp:tbl:frais 1 2 3
