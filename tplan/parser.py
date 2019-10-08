@@ -262,7 +262,7 @@ class Parser():
 			return
 		self.annee(annees)
 		done = []
-		for frais in self.bp.frias:
+		for frais in self.bp.frais:
 			nom = frais.nom
 			if nom in done:
 				continue
