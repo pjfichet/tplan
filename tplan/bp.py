@@ -96,6 +96,11 @@ class Plan():
 			if frais.annee == annee and frais.nom == nom:
 				return frais
 
+	def get_investissement(self, nom, annee):
+		for investissement in self.investissement:
+			if investissement.annee == annee and investissement.nom == nom:
+				return investissement
+
 	def get_tresorerie(self, cumul_mois):
 		for cal in self.tresorerie:
 			if cal.cumul_mois == cumul_mois:
@@ -253,6 +258,8 @@ class Plan():
 			resultat.resultat_courant = resultat.resultat_exploitation - resultat.emprunt_interets
 			resultat.produits_exceptionnels = resultat.amortissement_subventions
 			resultat.impot_societes = (resultat.resultat_courant + resultat.produits_exceptionnels)*0.15
+			if resultat.impot_societes < 0:
+				resultat.impot_societes = 0	
 			resultat.resultat_net = resultat.resultat_courant + resultat.produits_exceptionnels - resultat.impot_societes
 			resultat.autofinancement = resultat.resultat_net + resultat.amortissement - resultat.amortissement_subventions
 		self.has_resultat = True
