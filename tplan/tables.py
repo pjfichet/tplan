@@ -1,4 +1,5 @@
-tables = ['format', 'resultat', 'exploitation', 'tresorerie', 'bfr', 'frais']
+tables = ['format', 'resultat', 'exploitation', 'tresorerie', 'bfr',
+	'frais', 'investissements']
 
 
 resultat_rows = [

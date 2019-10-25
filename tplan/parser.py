@@ -198,6 +198,9 @@ class Parser():
 		elif table == 'frais':
 			self.header("Frais")
 			self.table_frais(annees)
+		elif table == 'investissements':
+			self.header("Investissements")
+			self.table_investissements(annees)
 
 	def header(self, header):
 		if self.debug:
@@ -278,5 +281,25 @@ class Parser():
 			print('')
 		print(".tblend")
 
+	def table_investissements(self, annees):
+		if self.debug:
+			return
+		self.annee(annees)
+		done = []
+		for inv in self.bp.investissement:
+			nom = inv.nom
+			if nom in done:
+				continue
+			done.append(nom)
+			print(f'.tblrow "{nom}"', end="")
+			for annee in annees:
+				get = self.bp.get_investissement(nom, annee)
+				if get is None:
+					montant = 0
+				else:
+					montant = get.montant
+				print(f" {montant}", end="")
+			print('')
+		print(".tblend")
 
 
