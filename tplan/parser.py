@@ -146,7 +146,8 @@ class Parser():
 		except AttributeError:
 			self.error(f"Invalid field {field}.")
 			return
-		if field in float_fields + other_float_fields:
+		# we don't round manually entered float field
+		if field in other_float_fields:
 			value=int(round(value))
 			value = format(value, 'n')
 		before = ""
@@ -301,5 +302,4 @@ class Parser():
 				print(f" {montant}", end="")
 			print('')
 		print(".tblend")
-
 
