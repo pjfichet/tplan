@@ -1,5 +1,5 @@
 tables = ['format', 'resultat', 'exploitation', 'tresorerie', 'bfr',
-	'frais', 'investissements']
+	'tva', 'frais', 'investissements']
 
 
 resultat_rows = [
@@ -99,6 +99,15 @@ bfr_rows = [
 	["variation_bfr", "Variation de BFR"]
 ]
 
+tva_rows = [
+	["tva_ventes", "TVA sur ventes"],
+	["tva_achats", "TVA sur achats"],
+	["tva_frais", "TVA sur frais"],
+	["tva_investissement", "TVA sur investissements"],
+	["credit_tva", "Crédit de TVA"],
+	["debit_tva", "Débit de TVA"],
+	["tva", "TVA due"]
+]
 
 tresorerie_rows = [
 	["ventes", "Clients TTC"],

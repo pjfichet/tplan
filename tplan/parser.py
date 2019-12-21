@@ -196,6 +196,10 @@ class Parser():
 			self.header("Besoin en fonds de roulement")
 			self.mois(self.bp.tresorerie, columns)
 			self.table(self.bp.tresorerie, bfr_rows, columns)
+		elif table == 'tva':
+			self.header("Calendrier de TVA")
+			self.mois(self.bp.tresorerie, columns)
+			self.table(self.bp.tresorerie, tva_rows, columns)
 		elif table == 'frais':
 			self.header("Frais")
 			self.table_frais(annees)
