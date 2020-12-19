@@ -197,7 +197,7 @@ class Plan():
 			for personnel in self.personnel:
 				if personnel.annee == resultat.annee:
 					nb_mois = 13 - personnel.embauche
-					resultat.salaire_brut += nb_mois * personnel.salaire_brut
+					resultat.salaire_brut += nb_mois * personnel.salaire_brut * personnel.etp
 					resultat.charges_salariales = resultat.salaire_brut * personnel.charges_salariales
 					resultat.charges_patronales = resultat.salaire_brut * personnel.charges_patronales
 					resultat.salaire_net = resultat.salaire_brut - resultat.charges_salariales
