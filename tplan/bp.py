@@ -17,8 +17,7 @@ class Plan():
 	impot: List[Divers] = field(default_factory=list)
 	investissement: List[Divers] = field(default_factory=list)
 	capital: List[Divers] = field(default_factory=list)
-	subvention_exploitation: List[Divers] = field(default_factory=list)
-	subvention_investissement: List[Divers] = field(default_factory=list)
+	subvention: List[Divers] = field(default_factory=list)
 	emprunt: List[Emprunt] = field(default_factory=list)
 	remboursement: List[Remboursement] = field(default_factory=list)
 	resultat: List[Resultat] = field(default_factory=list)
@@ -67,13 +66,9 @@ class Plan():
 		self.capital.append(Divers())
 		return self.capital[-1]
 
-	def new_subvention_exploitation(self):
-		self.subvention_exploitation.append(Divers())
-		return self.subvention_exploitation[-1]
-
-	def new_subvention_investissement(self):
-		self.subvention_investissement.append(Divers())
-		return self.subvention_investissement[-1]
+	def new_subvention(self):
+		self.subvention.append(Divers())
+		return self.subvention[-1]
 
 	def new_emprunt(self):
 		self.emprunt.append(Emprunt())
@@ -222,17 +217,15 @@ class Plan():
 				if capital.annee == resultat.annee:
 					resultat.capital += capital.montant
 
-			for subvention in self.subvention_exploitation:
+			for subvention in self.subvention:
 				if subvention.annee == resultat.annee:
-					resultat.subvention_exploitation += subvention.montant
-
-			for subvention in self.subvention_investissement:
-				if subvention.annee == resultat.annee:
-					resultat.subvention_investissement += subvention.montant
-				if resultat.annee == subvention.annee:
-					resultat.amortissement_subventions += subvention.montant / 8
-				elif resultat.annee <= subvention.annee + 4:
-					resultat.amortissement_subventions += subvention.montant / 4
+					if subvention.duree == 1:
+						resultat.subvention_exploitation += subvention.montant
+					else:
+						resultat.subvention_investissement += subvention.montant
+				if subvention.duree > 1:
+					if resultat.annee <= subvention.annee + subvention.duree:
+						resultat.amortissement_subventions += subvention.montant / subvention.duree
 
 			for remboursement in self.remboursement:
 				if remboursement.cumul_mois == resultat.annee * 12:
@@ -310,7 +303,7 @@ class Plan():
 							if get is not None:
 								get.creances_clients +=  produit.chiffre_affaire * (1+produit.tva) * produit.ventes[cal.mois -1]
 	
-			for apport in self.capital + self.subvention_investissement + self.subvention_exploitation:
+			for apport in self.capital + self.subvention:
 				if apport.annee == cal.annee:
 					cal.apport += apport.montant * apport.calendrier[cal.mois -1]
 
