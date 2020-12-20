@@ -205,7 +205,6 @@ class Plan():
 
 			for frais in self.frais:
 				if frais.annee == resultat.annee:
-					frais.montant = sum(frais.calendrier)
 					resultat.frais += frais.montant
 
 			for impot in self.impot:
@@ -328,8 +327,8 @@ class Plan():
 
 			for frais in self.frais:
 				if frais.annee == cal.annee:
-					cal.frais += frais.calendrier[cal.mois -1] * (1+frais.tva)
-					cal.tva_frais += frais.calendrier[cal.mois -1] * frais.tva
+					cal.frais += frais.montant * frais.calendrier[cal.mois -1] * (1+frais.tva)
+					cal.tva_frais += frais.montant * frais.calendrier[cal.mois -1] * frais.tva
 
 			for impot in self.impot:
 				if impot.annee == cal.annee:
