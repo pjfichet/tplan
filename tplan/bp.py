@@ -220,17 +220,14 @@ class Plan():
 
 			for capital in self.capital:
 				if capital.annee == resultat.annee:
-					capital.montant = sum(capital.calendrier)
 					resultat.capital += capital.montant
 
 			for subvention in self.subvention_exploitation:
 				if subvention.annee == resultat.annee:
-					subvention.montant = sum(subvention.calendrier)
 					resultat.subvention_exploitation += subvention.montant
 
 			for subvention in self.subvention_investissement:
 				if subvention.annee == resultat.annee:
-					subvention.montant = sum(subvention.calendrier)
 					resultat.subvention_investissement += subvention.montant
 				if resultat.annee == subvention.annee:
 					resultat.amortissement_subventions += subvention.montant / 8
@@ -315,7 +312,7 @@ class Plan():
 	
 			for apport in self.capital + self.subvention_investissement + self.subvention_exploitation:
 				if apport.annee == cal.annee:
-					cal.apport += apport.calendrier[cal.mois -1]
+					cal.apport += apport.montant * apport.calendrier[cal.mois -1]
 
 			for emprunt in self.emprunt:
 				if emprunt.mois_debut == cal.cumul_mois:
