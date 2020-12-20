@@ -209,7 +209,6 @@ class Plan():
 
 			for impot in self.impot:
 				if impot.annee == resultat.annee:
-					impot.montant = sum(impot.calendrier)
 					resultat.impot += impot.montant
 
 			for investissement in self.investissement:
@@ -332,7 +331,7 @@ class Plan():
 
 			for impot in self.impot:
 				if impot.annee == cal.annee:
-					cal.impot += impot.calendrier[cal.mois -1]
+					cal.impot += impot.montant * impot.calendrier[cal.mois -1]
 
 			for personnel in self.personnel:
 				if personnel.annee == cal.annee and personnel.embauche <= cal.mois:
