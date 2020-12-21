@@ -24,7 +24,7 @@ other_fields = ['annee_relle', 'chiffre_affaire', 'achat_marchandise',
 'subvention_investissement', 'amortissement_subventions',
 'emprunt_echeances', 'emprunt_capital', 'emprunt_interets',
 'valeur_ajoutee', 'excedent', 'resultat_exploitation',
-'resultat_courant', 'produits_exceptionnels', 'impot_societes',
+'resultat_courant', 'produits_exceptionnels', 'resultat_brut', 'impot_societes',
 'resultat_net', 'autofinancement', 'annee', 'mois', 'cumul_mois',
 'mois_reel', 'annee_reelle', 'ventes', 'tva_ventes', 'achats',
 'tva_achats', 'chiffre_affaire', 'chiffre_affaire_annuel',
@@ -54,7 +54,7 @@ other_float_fields = [
 	'emprunt_echeances', 'emprunt_capital', 'emprunt_interets',
 	'valeur_ajoutee', 'excedent', 'resultat_exploitation',
 	'resultat_courant', 'produits_exceptionnels', 'impot_societes',
-	'resultat_net', 'autofinancement', 'tva_ventes',
+	'resultat_brut', 'resultat_net', 'autofinancement', 'tva_ventes',
 	'tva_achats', 'chiffre_affaire_annuel', 'variation_stock',
 	'cumul_stock', 'apport', 'emprunt', 'remboursement', 'frais', 'impot',
 	'tva_frais', 'salaires_net', 'dettes_sociales', 'charges_sociales',
@@ -158,6 +158,7 @@ class Resultat():
 	resultat_exploitation: float = 0
 	resultat_courant: float = 0
 	produits_exceptionnels: float = 0
+	resultat_brut: float = 0
 	impot_societes: float = 0
 	resultat_net: float = 0
 	autofinancement: float = 0

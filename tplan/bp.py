@@ -187,7 +187,7 @@ class Plan():
 					resultat.chiffre_affaire += produit.chiffre_affaire
 					resultat.achat_marchandise += produit.chiffre_affaire* produit.prix_achat
 					resultat.achat_marchandise += sum(produit.achats)
-					resultat.variation_marchandise -= sum(produit.achats)
+					resultat.variation_marchandise += sum(produit.achats)
 
 			for personnel in self.personnel:
 				if personnel.annee == resultat.annee:
@@ -237,17 +237,18 @@ class Plan():
 						resultat.emprunt_capital -= pre.cumul_capital
 						resultat.emprunt_interets -= pre.cumul_interet
 				
-			resultat.marge_commerciale = resultat.chiffre_affaire - resultat.achat_marchandise - resultat.variation_marchandise
+			resultat.marge_commerciale = resultat.chiffre_affaire - resultat.achat_marchandise + resultat.variation_marchandise
 			resultat.charges_sociales = resultat.charges_salariales + resultat.charges_patronales
-			resultat.valeur_ajoutee = resultat.marge_commerciale + resultat.subvention_exploitation - resultat.frais
-			resultat.excedent = resultat.valeur_ajoutee - resultat.impot - resultat.salaire_brut - resultat.charges_patronales
+			resultat.valeur_ajoutee = resultat.marge_commerciale - resultat.frais
+			resultat.excedent = resultat.valeur_ajoutee + resultat.subvention_exploitation - resultat.impot - resultat.salaire_brut - resultat.charges_patronales
 			resultat.resultat_exploitation = resultat.excedent - resultat.amortissement
 			resultat.resultat_courant = resultat.resultat_exploitation - resultat.emprunt_interets
 			resultat.produits_exceptionnels = resultat.amortissement_subventions
-			resultat.impot_societes = (resultat.resultat_courant + resultat.produits_exceptionnels)*0.15
+			resultat.resultat_brut = (resultat.resultat_courant + resultat.produits_exceptionnels)
+			resultat.impot_societes = resultat.resultat_brut*0.15
 			if resultat.impot_societes < 0:
 				resultat.impot_societes = 0	
-			resultat.resultat_net = resultat.resultat_courant + resultat.produits_exceptionnels - resultat.impot_societes
+			resultat.resultat_net = resultat.resultat_brut - resultat.impot_societes
 			resultat.autofinancement = resultat.resultat_net + resultat.amortissement - resultat.amortissement_subventions
 		self.has_resultat = True
 
