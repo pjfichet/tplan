@@ -126,7 +126,7 @@ tresorerie_rows = [
 	["achats", "Achats TTC"],
 	["frais", "Frais généraux TTC"],
 	["tva", "TVA à payer"],
-	["salaires_net", "Salaires"],
+	["salaires_net", "Salaires net"],
 	["charges_sociales", "Cotisations sociales"],
 	["investissement", "Investissements TTC"],
 	["remboursement", "Remboursements d'emprunts"],
