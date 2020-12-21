@@ -4,8 +4,7 @@ from dataclasses import dataclass, field
 from typing import List
 
 classes = ['plan', 'produit', 'personnel', 'frais', 'impot',
-	'investissement', 'capital', 'subvention_exploitation',
-	'subvention_investissement', 'emprunt']
+	'investissement', 'capital', 'subvention', 'emprunt']
 
 
 other_classes = ['resultat', 'tresorerie']
