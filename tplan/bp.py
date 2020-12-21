@@ -209,7 +209,7 @@ class Plan():
 			for investissement in self.investissement:
 				if investissement.annee == resultat.annee:
 					resultat.investissement += investissement.montant
-				if resultat.annee <= investissement.annee + investissement.duree:
+				if resultat.annee >= investissement.annee and resultat.annee <= investissement.annee + investissement.duree:
 					resultat.amortissement += investissement.montant / investissement.duree
 
 			for capital in self.capital:
@@ -223,7 +223,7 @@ class Plan():
 					else:
 						resultat.subvention_investissement += subvention.montant
 				if subvention.duree > 1:
-					if resultat.annee <= subvention.annee + subvention.duree:
+					if resultat.annee >= subvention.annee and resultat.annee <= subvention.annee + subvention.duree:
 						resultat.amortissement_subventions += subvention.montant / subvention.duree
 
 			for remboursement in self.remboursement:
