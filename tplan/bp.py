@@ -208,10 +208,9 @@ class Plan():
 
 			for investissement in self.investissement:
 				if investissement.annee == resultat.annee:
-					investissement.montant = sum(investissement.calendrier)
 					resultat.investissement += investissement.montant
 				if resultat.annee <= investissement.annee + investissement.duree:
-					resultat.amortissement += sum(investissement.calendrier) / investissement.duree
+					resultat.amortissement += investissement.montant / investissement.duree
 
 			for capital in self.capital:
 				if capital.annee == resultat.annee:
@@ -330,9 +329,9 @@ class Plan():
 
 			for investissement in self.investissement:
 				if investissement.annee == cal.annee:
-					cal.investissement += investissement.calendrier[cal.mois -1] * (1+investissement.tva)
+					cal.investissement += investissement.montant * investissement.calendrier[cal.mois -1] * (1+investissement.tva)
 					#tva_investissement == tva_immobilisation
-					cal.tva_investissement += investissement.calendrier[cal.mois -1] * investissement.tva
+					cal.tva_investissement += investissement.montant * investissement.calendrier[cal.mois -1] * investissement.tva
 
 			tva = cal.tva_achats + cal.tva_frais + cal.tva_investissement - cal.tva_ventes
 			if tva >= 0:
