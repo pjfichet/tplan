@@ -280,7 +280,7 @@ class Plan():
 						+ produit.achats[cal.mois -1] * produit.tva
 					cal.variation_stock += produit.achats[cal.mois -1] # * (1+produit.tva)
 					# On paie les achats à l'expiration du délai fournisseur
-					mois_paiement = int(cal.cumul_mois + produit.delai_fournisseur/30)
+					mois_paiement = cal.cumul_mois + produit.delai_fournisseur
 					get = self.get_tresorerie(mois_paiement)
 					if get is not None:
 						achats = produit.chiffre_affaire * (1+produit.tva) * produit.prix_achat * produit.ventes[cal.mois -1] \
@@ -293,7 +293,7 @@ class Plan():
 							if get is not None:
 								get.dettes_fournisseurs += achats
 					# On accumule les créances clients
-					mois_paiement = int(cal.cumul_mois + produit.delai_client/30)
+					mois_paiement = cal.cumul_mois + produit.delai_client
 					get = self.get_tresorerie(mois_paiement)
 					if get is not None:
 						get.ventes += produit.chiffre_affaire * (1+produit.tva) * produit.ventes[cal.mois -1]
