@@ -1,5 +1,5 @@
 tables = ['format', 'resultat', 'exploitation', 'tresorerie', 'bfr',
-	'tva', 'frais', 'investissements']
+	'tva', 'frais', 'investissements', 'ventes']
 
 
 resultat_rows = [

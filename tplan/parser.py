@@ -206,6 +206,9 @@ class Parser():
 		elif table == 'investissements':
 			self.header("Investissements")
 			self.table_investissements(annees)
+		elif table == 'ventes':
+			self.header("Répartition mensuelle des ventes")
+			self.table_ventes(annees)
 
 	def header(self, header):
 		if self.debug:
@@ -304,6 +307,23 @@ class Parser():
 				else:
 					montant = get.montant
 				print(f" {montant}", end="")
+			print('')
+		print(".tblend")
+
+	def table_ventes(self, annees):
+		if self.debug:
+			return
+		self.annee(annees)
+		for i in range(12):
+			mois = (12 * (annees[0] -1)) + i
+			mois_reel = self.bp.tresorerie[mois].mois_reel
+			nom_mois = mois_list[mois_reel -1]
+			print(f'.tblrow "{nom_mois}"', end="")
+			for annee in annees:
+				mois = (12 * (annee -1)) + i
+				ventes_ht = round(self.bp.tresorerie[mois].chiffre_affaire)
+				value = format(ventes_ht, 'n')
+				print(f' "{value}"', end='')
 			print('')
 		print(".tblend")
 
