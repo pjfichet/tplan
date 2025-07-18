@@ -1,3 +1,11 @@
+Information
+-----------
+
+This repository has been archived, as it appears to be
+much easier to use libreoffice calc for that purpose
+and copy the data in your troff document.
+
+
 Tplan
 -----
 
